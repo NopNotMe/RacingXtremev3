@@ -6,7 +6,6 @@
 */
 
 
-
 #include "commandev.h"
 #include "remod.h"
 #include "banlist.h"
@@ -626,7 +625,7 @@ void setmaster(clientinfo *ci, int priv)
 
     if(modechanged) remod::onevent(ONMASTERMODE, "ii", -1, mastermode);
 
-    // check if client get any privelge
+    // check if client get any priv
     if(ci->privilege != PRIV_NONE)
     {
         name = privname(ci->privilege);
@@ -827,6 +826,10 @@ static void freegetmap(ENetPacket *packet)
 
 void sendmapto(int cn)
 {
+    //get racemod var
+    ident *id = getident("racemod");
+    bool racemod = *id->storage.s;
+
     clientinfo *ci = (clientinfo *)getinfo(cn);
     if(!ci || !m_edit) return;
 
@@ -837,10 +840,14 @@ void sendmapto(int cn)
         // remod
         remod::onevent(ONGETMAP, "i", cn);
 
-        sendservmsgf("[%s is getting the map]", colorname(ci));
+        if (!racemod)
+        {
+          sendservmsgf("[%s is getting the map]", colorname(ci));
+        }
         if((ci->getmap = sendfile(cn, 2, mapdata, "ri", N_SENDMAP)))
             ci->getmap->freeCallback = freegetmap;
         ci->needclipboard = totalmillis ? totalmillis : 1;
+
     }
 }
 
