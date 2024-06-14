@@ -9,6 +9,10 @@ remod64
 # config
 server-init.cfg
 
+# Ignore logs
+*.log
+log.txt
+
 # unnecessary
 .vscode
 .deps
