@@ -9,6 +9,9 @@ remod64
 # config
 server-init.cfg
 
+# Untrack demos
+demos/
+
 # Ignore logs
 *.log
 log.txt
